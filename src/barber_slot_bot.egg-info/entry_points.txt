@@ -1,2 +1,0 @@
-[console_scripts]
-barber-slot-bot = barber_bot.main:main
