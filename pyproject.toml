@@ -9,24 +9,33 @@ description = "AI-assisted overdue client slot matching for barbers"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+  "fastapi>=0.122.0",
+  "jinja2>=3.1.6",
   "pydantic-settings>=2.2.1",
+  "python-multipart>=0.0.20",
   "requests>=2.32.3",
   "stripe>=11.0.0",
+  "uvicorn>=0.38.0",
 ]
 
 [project.optional-dependencies]
 dev = [
+  "httpx>=0.28.1",
   "pytest>=8.3.5",
 ]
 
 [project.scripts]
 barber-slot-bot = "barber_bot.main:main"
+barber-slot-web = "barber_bot.web:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+barber_bot = ["templates/*.html"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

@@ -23,8 +23,12 @@ This project automates open-slot recovery for a barber shop:
 src/barber_bot/
   config.py
   main.py
+  runner.py
+  web.py
   models.py
   sample_data.py
+  templates/
+    index.html
   integrations/
     base.py
     composite.py
@@ -77,6 +81,26 @@ Then run:
 ```bash
 barber-slot-bot
 ```
+
+### 3) Web app dashboard
+
+Start the web UI:
+
+```bash
+barber-slot-web
+```
+
+Then open:
+
+```text
+http://localhost:8000
+```
+
+From the dashboard you can:
+- choose dry/live mode,
+- set week start date,
+- optionally paste snapshot JSON,
+- run matching and view results in a table.
 
 ## Snapshot JSON format
 

@@ -56,6 +56,10 @@ def build_demo_dataset(now: datetime | None = None) -> tuple[list[TimeSlot], lis
 def load_snapshot(path: str) -> tuple[list[TimeSlot], list[OverdueClient], list[VisitPattern]]:
     with open(path, "r", encoding="utf-8") as f:
         payload = json.load(f)
+    return load_snapshot_payload(payload)
+
+
+def load_snapshot_payload(payload: dict) -> tuple[list[TimeSlot], list[OverdueClient], list[VisitPattern]]:
 
     slots = [
         TimeSlot(
