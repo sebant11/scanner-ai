@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barber Slot Bot Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        color: #1a1a1a;
+      }
+      h1 {
+        margin-bottom: 0.5rem;
+      }
+      form {
+        display: grid;
+        gap: 0.75rem;
+        max-width: 780px;
+        margin-bottom: 1.5rem;
+      }
+      label {
+        font-weight: 600;
+      }
+      input,
+      select,
+      textarea,
+      button {
+        font-size: 0.95rem;
+        padding: 0.5rem;
+      }
+      textarea {
+        min-height: 180px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+      button {
+        width: 180px;
+      }
+      .error {
+        color: #a40000;
+        margin: 0.5rem 0 1rem;
+        font-weight: 600;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 1100px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 0.6rem;
+        text-align: left;
+      }
+      th {
+        background: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Barber Slot Bot Dashboard</h1>
+    <p>Run the overdue-client matching workflow from your browser.</p>
+
+    <form method="post" action="/run">
+      <div>
+        <label for="mode">Mode</label><br />
+        <select id="mode" name="mode">
+          <option value="dry" {% if mode == "dry" %}selected{% endif %}>Dry run</option>
+          <option value="live" {% if mode == "live" %}selected{% endif %}>Live (Square/Stripe)</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="week_start">Week start (YYYY-MM-DD, UTC)</label><br />
+        <input id="week_start" name="week_start" value="{{ week_start }}" />
+      </div>
+
+      <div>
+        <label for="snapshot_json">Snapshot JSON (optional)</label><br />
+        <textarea
+          id="snapshot_json"
+          name="snapshot_json"
+          placeholder='{"slots":[],"clients":[],"patterns":[]}'
+        >{{ snapshot_json }}</textarea>
+      </div>
+
+      <button type="submit">Run Matching</button>
+    </form>
+
+    {% if error %}
+      <div class="error">Error: {{ error }}</div>
+    {% endif %}
+
+    {% if ran %}
+      <h2>Matching Results</h2>
+      {% if actions|length == 0 %}
+        <p>No actions returned for this run.</p>
+      {% else %}
+        <table>
+          <thead>
+            <tr>
+              <th>Start</th>
+              <th>Slot</th>
+              <th>Client</th>
+              <th>Decision</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in actions %}
+              <tr>
+                <td>{{ row.start_at }}</td>
+                <td>{{ row.slot_id }}</td>
+                <td>{{ row.client }}</td>
+                <td>{{ row.decision }}</td>
+                <td>{{ row.notes }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    {% endif %}
+  </body>
+</html>
+
