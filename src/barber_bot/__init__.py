@@ -1,0 +1,2 @@
+"""Barber slot bot package."""
+
